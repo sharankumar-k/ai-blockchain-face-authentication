@@ -77,7 +77,7 @@ This project introduces a secure authentication framework where:
 
 ## System Architecture
 
-![System Architecture](screenshots/09-system-architecture.png)
+![System Architecture](screenshots/09-project-architecture.png)
 
 ---
 
