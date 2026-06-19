@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Face Authentication</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial,sans-serif;
+    }
+
+    body{
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:radial-gradient(circle at top left,#1b1f2a,#090b10);
+      color:#fff;
+      padding:20px;
+    }
+
+    .container{
+      width:100%;
+      max-width:950px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:25px;
+    }
+
+    .card{
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.12);
+      border-radius:16px;
+      padding:25px;
+      backdrop-filter:blur(10px);
+      box-shadow:0px 0px 30px rgba(0,0,0,0.6);
+    }
+
+    .title{
+      font-size:22px;
+      font-weight:bold;
+      margin-bottom:6px;
+    }
+
+    .sub-title{
+      font-size:14px;
+      opacity:0.8;
+      margin-bottom:18px;
+    }
+
+    label{
+      display:block;
+      font-size:13px;
+      margin:10px 0 6px;
+      opacity:0.85;
+    }
+
+    input{
+      width:100%;
+      padding:12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.18);
+      outline:none;
+      background:rgba(0,0,0,0.35);
+      color:white;
+      font-size:14px;
+      transition:0.2s;
+    }
+
+    input:focus{
+      border-color:#00ffcc;
+      box-shadow:0 0 0 3px rgba(0,255,204,0.18);
+    }
+
+    .btn-group{
+      display:flex;
+      gap:12px;
+      margin-top:18px;
+    }
+
+    button{
+      flex:1;
+      padding:12px;
+      border:none;
+      border-radius:10px;
+      cursor:pointer;
+      font-size:15px;
+      font-weight:600;
+      transition:0.2s;
+    }
+
+    .btn-primary{
+      background:linear-gradient(135deg,#00ffcc,#00b7ff);
+      color:#000;
+    }
+
+    .btn-primary:hover{
+      transform:translateY(-1px);
+      opacity:0.95;
+    }
+
+    .btn-outline{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.25);
+      color:#fff;
+    }
+
+    .btn-outline:hover{
+      border-color:#00ffcc;
+      box-shadow:0 0 10px rgba(0,255,204,0.2);
+    }
+
+    .video-box{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:14px;
+    }
+
+    video{
+      width:100%;
+      max-width:420px;
+      border-radius:14px;
+      border:2px solid rgba(0,255,204,0.5);
+      background:black;
+      box-shadow:0px 0px 20px rgba(0,255,204,0.15);
+    }
+
+    .status{
+      margin-top:14px;
+      padding:12px;
+      border-radius:10px;
+      background:rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.12);
+      font-size:14px;
+      min-height:44px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      opacity:0.9;
+    }
+
+    /* ✅ Toast popup */
+    .toast{
+      position:fixed;
+      top:20px;
+      right:20px;
+      background:rgba(0,0,0,0.85);
+      color:white;
+      padding:14px 18px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.2);
+      font-size:14px;
+      font-weight:600;
+      opacity:0;
+      transform:translateY(-10px);
+      pointer-events:none;
+      transition:0.3s;
+      z-index:9999;
+    }
+
+    .toast.show{
+      opacity:1;
+      transform:translateY(0px);
+    }
+
+    .toast.success{
+      border-color:rgba(0,255,204,0.6);
+    }
+
+    .toast.error{
+      border-color:rgba(255,92,92,0.6);
+    }
+
+    @media(max-width:820px){
+      .container{ grid-template-columns:1fr; }
+      video{ max-width:100%; }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="card">
+    <div class="title">AI Face Authentication</div>
+    <div class="sub-title">Register & verify using face + credentials</div>
+
+    <form id="authForm" onsubmit="return false;">
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="Enter your email" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter your password" required>
+
+      <div class="btn-group">
+        <button type="button" class="btn-primary" id="registerBtn">Register</button>
+        <button type="button" class="btn-outline" id="verifyBtn">Verify</button>
+      </div>
+    </form>
+
+    <div class="status" id="status">Status: Waiting...</div>
+  </div>
+
+  <div class="card video-box">
+    <div class="title">Live Camera</div>
+    <div class="sub-title">Align your face inside the frame</div>
+
+    <video id="video" autoplay muted playsinline></video>
+    <canvas id="canvas" style="display:none;"></canvas>
+  </div>
+
+</div>
+
+<!-- ✅ Toast popup -->
+<div id="toast" class="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
+
