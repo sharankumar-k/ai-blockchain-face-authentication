@@ -5,7 +5,7 @@ import json
 # Ganache & Contract details
 # -------------------------------
 GANACHE_URL = "http://127.0.0.1:7545"
-CONTRACT_ADDRESS = "0xD05511e86Ed30D84c8E1789ed35cD94ec75b09F7"
+CONTRACT_ADDRESS = "YOUR_CONTRACT_ADDRESS"
 
 # -------------------------------
 # Web3 connection
